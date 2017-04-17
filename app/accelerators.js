@@ -101,6 +101,7 @@ for (const key in allAccelerators) {
 
 // decides if a keybard event is a Hyper Accelerator
 function isAccelerator(e) {
+  return false;
   let keys = [];
   if (!e.ctrlKey && !e.metaKey && !e.altKey) {
     // all accelerators needs Ctrl or Cmd or Alt

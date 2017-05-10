@@ -5,7 +5,7 @@ const vm = require('vm');
 
 const {dialog} = require('electron');
 const isDev = require('electron-is-dev');
-const gaze = require('gaze');
+//const gaze = require('gaze');
 const Config = require('electron-config');
 const notify = require('./notify');
 
@@ -38,31 +38,6 @@ const watchers = [];
 
 let cfg = {};
 
-function watch() {
-  // watch for changes on config every 2s
-  // windows interval: https://github.com/zeit/hyper/pull/1772
-  gaze(path, process.platform === 'win32' ? {interval: 2000} : {}, function (err) {
-    if (err) {
-      throw err;
-    }
-    this.on('changed', () => {
-      try {
-        if (exec(readFileSync(path, 'utf8'))) {
-          notify('Hyper configuration reloaded!');
-          watchers.forEach(fn => fn());
-        }
-      } catch (err) {
-        dialog.showMessageBox({
-          message: `An error occurred loading your configuration (${path}): ${err.message}`,
-          buttons: ['Ok']
-        });
-      }
-    });
-    this.on('error', () => {
-      // Ignore file watching errors
-    });
-  });
-}
 
 let _str; // last script
 function exec(str) {
@@ -127,7 +102,6 @@ exports.init = function () {
       throw new Error(`Failed to write config to ${path}: ${err.message}`);
     }
   }
-  watch();
 };
 
 exports.getConfigDir = function () {

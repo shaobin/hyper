@@ -39,7 +39,9 @@ const watchers = [];
 let cfg = {};
 
 function watch() {
-  gaze(path, function (err) {
+  // watch for changes on config every 2s
+  // windows interval: https://github.com/zeit/hyper/pull/1772
+  gaze(path, process.platform === 'win32' ? {interval: 2000} : {}, function (err) {
     if (err) {
       throw err;
     }
